@@ -7,11 +7,74 @@ import {
   Box,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useState } from "react";
 import "../../styles/contact/contact.css";
 const ContactComponent = () => {
-  const handleSubmit = (e) => {
+  //
+  const [formData, setFormData] = useState({
+    nombre: "luis",
+    correo: "luis@gmail.com",
+    mensaje: "luis_5",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log("formData:", formData);
+  };
+
+  ////
+  /* const handleCreateProduct = async (e) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para procesar el formulario de contacto
+
+    try {
+      const response = await fetch("http://localhost:8080/api/products/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("auth-token-app"),
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.status === 200) {
+        // Producto creado exitosamente
+        console.log("Product created successfully");
+        // Agregar lógica adicional según sea necesario
+      } else {
+        // Error al crear el producto
+        console.error("Error creating product");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
+    updateProducts();
+  }; */
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:8080/api/contact/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem("auth-token-app"),
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.status === 200) {
+        // Producto creado exitosamente
+        console.log("Mail send successfully");
+        // Agregar lógica adicional según sea necesario
+      } else {
+        // Error al crear el producto
+        console.error("Error creating mail");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -77,7 +140,8 @@ const ContactComponent = () => {
                     /*  defaultValue="Nombre" */
                     size="small"
                     fullWidth
-                    required
+                    value={formData.nombre}
+                    onChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={8}>
@@ -89,7 +153,8 @@ const ContactComponent = () => {
                     size="small"
                     fullWidth
                     variant="outlined"
-                    required
+                    value={formData.correo}
+                    onChange={handleChange}
                   />
                 </Grid>
               </Grid>
@@ -99,8 +164,10 @@ const ContactComponent = () => {
                 fullWidth
                 multiline
                 rows={4}
-                required
+                value={formData.mensaje}
+                onChange={handleChange}
               />
+
               <Box sx={{ width: 200, display: "flex", marginX: "auto" }}>
                 <Button
                   type="submit"

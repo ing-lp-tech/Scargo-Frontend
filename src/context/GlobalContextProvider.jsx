@@ -5,12 +5,12 @@ import { productsScargo } from "../productsScargo";
 const GlobalContext = createContext();
 
 //users login
-const users = [
+/* const users = [
   { username: "luis", password: "luis" },
   { username: "usuario1", password: "contrasena1" },
   { username: "usuario2", password: "contrasena2" },
   { username: "usuario3", password: "contrasena3" },
-];
+]; */
 //
 
 // eslint-disable-next-line react/prop-types
@@ -138,7 +138,7 @@ const GlobalContextProvider = ({ children }) => {
   };
 
   //functions login
-  const login = (credentials) => {
+  /*   const login = (credentials) => {
     const user = users.find(
       (user) =>
         user.username === credentials.username &&
@@ -147,6 +147,35 @@ const GlobalContextProvider = ({ children }) => {
     if (user) {
       setLoggedIn(true);
       setUsername(credentials.username);
+    }
+  }; */
+
+  const login = async (credentials) => {
+    /* credentials.preventDefault(); */
+    console.log("credentials:", credentials);
+    const response = await fetch("http://localhost:8080/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: credentials.username,
+        password: credentials.password,
+      }),
+    }).then((res) => {
+      return res.json();
+    });
+    console.log("login", response.status, response.message);
+
+    /* .then((res) => res.json()); */
+
+    if (response.status == 200) {
+      localStorage.setItem("auth-token-app", response.accessToken);
+      /* navigate("/home"); */
+      setLoggedIn(true);
+    }
+    if (response.status == 401) {
+      setLoggedIn(false);
     }
   };
 
