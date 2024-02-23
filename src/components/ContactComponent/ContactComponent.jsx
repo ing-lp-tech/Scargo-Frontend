@@ -63,8 +63,8 @@ const ContactComponent = () => {
         },
         body: JSON.stringify(formData),
       });
-
-      if (response.status === 200) {
+      console.log("create mail", response.status, response.mail);
+      if (response.status == 200) {
         // Producto creado exitosamente
         console.log("Mail send successfully");
         // Agregar lógica adicional según sea necesario
