@@ -12,9 +12,9 @@ import "../../styles/contact/contact.css";
 const ContactComponent = () => {
   //
   const [formData, setFormData] = useState({
-    nombre: "luis",
-    correo: "luis@gmail.com",
-    mensaje: "luis_5",
+    nombre: "",
+    correo: "@gmail.com",
+    mensaje: "",
   });
 
   const handleChange = (e) => {
@@ -22,38 +22,8 @@ const ContactComponent = () => {
     console.log("formData:", formData);
   };
 
-  ////
-  /* const handleCreateProduct = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost:8080/api/products/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("auth-token-app"),
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.status === 200) {
-        // Producto creado exitosamente
-        console.log("Product created successfully");
-        // Agregar lógica adicional según sea necesario
-      } else {
-        // Error al crear el producto
-        console.error("Error creating product");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-
-    updateProducts();
-  }; */
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch("http://localhost:8080/api/contact/", {
         method: "POST",
@@ -67,6 +37,11 @@ const ContactComponent = () => {
       if (response.status == 200) {
         // Producto creado exitosamente
         console.log("Mail send successfully");
+        setFormData({
+          nombre: "",
+          correo: "@gmail.com",
+          mensaje: "",
+        });
         // Agregar lógica adicional según sea necesario
       } else {
         // Error al crear el producto
@@ -76,7 +51,6 @@ const ContactComponent = () => {
       console.error("Error:", error);
     }
   };
-
   return (
     <div>
       <div className="titleContac">
@@ -109,37 +83,16 @@ const ContactComponent = () => {
               >
                 Envíanos un mensaje
               </Typography>
-              {/* <div className="datos">
-                <TextField
-                  label="Nombre"
-                  variant="outlined"
-                  id="outlined-size-small"
-                  defaultValue="Small"
-                  size="small"
-                  fullWidth
-                  required
-                />
 
-                <TextField
-                  label="Correo Electrónico"
-                  id="outlined-size-small"
-                  defaultValue="Small"
-                  size="small"
-                  fullWidth
-                  variant="outlined"
-                  required
-                />
-              </div> */}
               <Grid container spacing={2}>
                 <Grid item xs={4}>
                   {/* El primer TextField ocupará 4 columnas de las 12, es decir, 1/3 del ancho total */}
                   <TextField
                     label="Nombre"
                     variant="outlined"
-                    id="outlined-size-small"
-                    /*  defaultValue="Nombre" */
                     size="small"
                     fullWidth
+                    name="nombre"
                     value={formData.nombre}
                     onChange={handleChange}
                   />
@@ -148,11 +101,10 @@ const ContactComponent = () => {
                   {/* El segundo TextField ocupará 8 columnas de las 12, es decir, 2/3 del ancho total */}
                   <TextField
                     label="Correo Electrónico"
-                    id="outlined-size-small"
-                    /* defaultValue="Correo Electrónico" */
+                    variant="outlined"
                     size="small"
                     fullWidth
-                    variant="outlined"
+                    name="correo"
                     value={formData.correo}
                     onChange={handleChange}
                   />
@@ -164,6 +116,7 @@ const ContactComponent = () => {
                 fullWidth
                 multiline
                 rows={4}
+                name="mensaje"
                 value={formData.mensaje}
                 onChange={handleChange}
               />
