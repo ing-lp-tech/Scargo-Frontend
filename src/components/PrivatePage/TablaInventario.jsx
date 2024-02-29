@@ -2,10 +2,9 @@
 // En TablaInventario.js
 
 // eslint-disable-next-line react/prop-types
-
 import { useState } from "react";
 
-const TablaInventario = ({ inventario, onEliminar, onModificar }) => {
+const TablaInventario = ({ cortes, onEliminar, onModificar }) => {
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handleEliminar = (id) => {
@@ -23,39 +22,74 @@ const TablaInventario = ({ inventario, onEliminar, onModificar }) => {
       <thead>
         <tr>
           <th>ID</th>
+          <th>Nombre</th>
+          <th>Cantidad Metros</th>
+          <th>Cantidad Prendas</th>
+          <th>Colores</th>
+          <th>Talles</th>
           <th>Fecha</th>
-          <th>Cant. Metros</th>
-          <th>Cant. Prendas</th>
-          <th>Detalle</th>
+          <th>Observaciones</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        {inventario.map((item) => (
+        {cortes.map((item) => (
           <tr key={item.id}>
-            <td>{item.id}</td>
-            <td>{item.fecha}</td>
-            <td>{item.cantMetros}</td>
-            <td>{item.cantPrendas}</td>
             <td>
-              {Object.entries(item.inventario).map(([clave, valores]) => {
-                /* let totalCantidad = 0;  */ // Variable para almacenar la cantidad total
-
-                return (
-                  <div key={clave}>
-                    <p>Talle: {clave}</p>
-                    {Object.entries(valores).map(([propiedad, valor]) => {
-                      /*  totalCantidad += valor; */
-
-                      return (
-                        <p key={propiedad}>
-                          {propiedad}: {valor}
-                        </p>
-                      );
-                    })}
-                  </div>
-                );
-              })}
+              {selectedRow === item.id ? (
+                <input type="text" value={item.id} />
+              ) : (
+                item.id
+              )}
+            </td>
+            <td>
+              {selectedRow === item.id ? (
+                <input type="text" value={item.nombre} />
+              ) : (
+                item.nombre
+              )}
+            </td>
+            <td>
+              {selectedRow === item.id ? (
+                <input type="text" value={item.cant_metros} />
+              ) : (
+                item.cant_metros
+              )}
+            </td>
+            <td>
+              {selectedRow === item.id ? (
+                <input type="text" value={item.cant_prendas} />
+              ) : (
+                item.cant_prendas
+              )}
+            </td>
+            <td>
+              {selectedRow === item.id ? (
+                <input type="text" value={item.colores} />
+              ) : (
+                item.colores
+              )}
+            </td>
+            <td>
+              {selectedRow === item.id ? (
+                <input type="text" value={item.talles} />
+              ) : (
+                item.talles
+              )}
+            </td>
+            <td>
+              {selectedRow === item.id ? (
+                <input type="text" value={item.fecha} />
+              ) : (
+                item.fecha
+              )}
+            </td>
+            <td>
+              {selectedRow === item.id ? (
+                <input type="text" value={item.observaciones} />
+              ) : (
+                item.observaciones
+              )}
             </td>
             <td>
               {selectedRow === item.id ? (

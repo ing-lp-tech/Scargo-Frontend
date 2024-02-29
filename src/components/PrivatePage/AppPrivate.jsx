@@ -3,6 +3,7 @@ import ModalForm from "./ModalForm";
 import TablaInventario from "./TablaInventario";
 import "../../styles/privatePage/appPrivate.css";
 import { useGlobalContext } from "../../context/GlobalContextProvider";
+import { useNavigate } from "react-router-dom";
 
 /* import SeleccionStock from "../components/PrivatePage/SelectionStock";
 import ConfiguracionStock from "../components/PrivatePage/Configuration"; */
@@ -16,6 +17,11 @@ const AppPrivate = () => {
   const { inventariado, inventarioContext } = useGlobalContext();
 
   const [inventario, setInventario] = useState(inventarioContext);
+
+  //cortes
+  const [cortes, setCortes] = useState([]);
+
+  const navigate = useNavigate();
 
   const handleOpenModal = () => {
     setModalOpen(true);
@@ -55,9 +61,35 @@ const AppPrivate = () => {
     setModalOpen(true);
   };
 
+  const updateCortes = async () => {
+    fetch("http://localhost:8080/api/cortes", {
+      headers: {
+        Authorization: localStorage.getItem("auth-token-app"),
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        if (data.status == 401) {
+          navigate("/");
+        }
+        // Suponiendo que data.cortes es un array de objetos
+        const arrayDeObjetos = data.cortes.map((corte) => ({ ...corte }));
+
+        // Ahora arrayDeObjetos es un array de objetos independiente de data.cortes
+        console.log("Array de objetos:", arrayDeObjetos);
+
+        setCortes(arrayDeObjetos);
+        console.log("data cortes:", data);
+      });
+  };
+
   useEffect(() => {
-    inventariado(inventario);
-  }, [inventario]);
+    updateCortes();
+    /* inventariado(inventario); */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="app-container">
@@ -75,7 +107,7 @@ const AppPrivate = () => {
         }
       />
       <TablaInventario
-        inventario={inventarioContext}
+        cortes={cortes}
         onEliminar={handleEliminar}
         onModificar={handleModificar}
         selectedRow={selectedRow}
